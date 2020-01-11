@@ -1,0 +1,3 @@
+#!/bin/sh
+
+ls -t -tm -I . -I .. * -m -p -t | tr -d " "

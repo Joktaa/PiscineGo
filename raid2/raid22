@@ -1,0 +1,162 @@
+/*//Verifier que le sudoku est resolvable
+//verifier dans l'entree que ce sont bien des chiffres de 1 à 9*
+//Enlever le --cast ligne 85
+
+package main
+
+import (
+	"fmt"
+	"os"
+)
+
+func main() {
+	params := os.Args[1:]
+
+	if testEntre(params) == false {
+		fmt.Println("Error")
+		return
+	}
+
+	sudoku := remplir2DTab(params)
+	fmt.Println(sudoku)
+	
+	if resoudre(&sudoku) {
+		fmt.Println(sudoku)
+	} else {
+		fmt.Println("NON")
+	}
+}
+
+func testEntre(tab []string) bool {
+	if len(tab) != 9 {
+		return false
+	}
+	for _, val := range tab {
+		if len(val) != 9 {
+			return false
+		}
+	}
+
+	return true
+}
+
+func resoudre(tab *[9][9]string) bool{
+
+	if !isNotVide(tab) {
+		return true
+	}
+
+		for x := 0; x < 9; x++ {
+			for y := 0; y < 9; y++ {
+				if tab[x][y] == "." {
+					for nombre := 1; nombre < 10; nombre++ {
+
+						tab[x][y] = intToString(nombre)
+						if testLigne(tab, x, nombre) == true {
+							if testColonne(tab, y, nombre) == true {
+								if testCarre(tab, x, y, nombre) == true {
+									if resoudre(tab) {
+										return true
+									}
+									tab[x][y] = "."
+								} else {
+									tab[x][y] = "."
+								}
+							} else {
+								tab[x][y] = "."
+							}
+						} else {
+							tab[x][y] = "."
+						}
+					}
+					return false
+				}
+			}
+		}
+		return false
+}
+
+func isNotVide(tab *[9][9]string) bool {
+	for x := 0; x < 9; x++ {
+		for y := 0; y < 9; y++ {
+			if tab[x][y] == "." {
+				return true
+			}
+		}
+	}
+	return false
+}
+
+func remplir2DTab(tab []string) [9][9]string {
+	var result [9][9]string
+	for x := range tab {
+		for y, val := range tab[x] {
+			result[x][y] = string(val)
+		}
+	}
+	return result
+}
+
+func testLigne(tab *[9][9]string, x, nombre int) bool {
+	for i := 0; i < 9; i++ {
+		if intToString(nombre) == tab[x][i] {
+			return false
+		}
+	}
+	return true
+}
+
+func testColonne(tab *[9][9]string, y, nombre int) bool {
+	for i := 0; i < 9; i++ {
+		if intToString(nombre) == tab[i][y] {
+			return false
+		}
+	}
+	return true
+}
+
+func testCarre(tab *[9][9]string, posX, posY, nombre int) bool {
+	var x int
+	var maxX int
+	var y int
+	var maxY int
+
+	if posX < 3 {
+		x = 0
+		maxX = 3
+	} else if posX > 5 {
+		x = 6
+		maxX = 9
+	} else {
+		x = 3
+		maxX = 6
+	}
+
+	if posY < 3 {
+		y = 0
+		maxY = 3
+	} else if posY > 5 {
+		y = 6
+		maxY = 9
+	} else {
+		y = 3
+		maxY = 6
+	}
+
+	for x < maxX {
+		for y < maxY {
+			if intToString(nombre) == tab[x][y] {
+				return false
+			}
+			y++
+		}
+		x++
+	}
+	return true
+}
+
+func intToString(x int) string {
+	m := map[int]string{0: "0", 1: "1", 2: "2", 3: "3", 4: "4", 5: "5", 6: "6", 7: "7", 8: "8", 9: "9"}
+	return m[x]
+}
+*/
